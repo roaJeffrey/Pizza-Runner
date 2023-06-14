@@ -194,6 +194,10 @@ export default function Dashboard() {
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Orders />
                 </Paper>
+                <br />
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Orders />
+                </Paper>
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />

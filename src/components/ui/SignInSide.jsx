@@ -12,6 +12,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import doPost from '../helpers/fetch_helper';
+import { useNavigate } from 'react-router';
 
 function Copyright(props) {
   return (
@@ -31,13 +34,45 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      setIsLoading(true);
+      const data = {
+        email,
+        password
+      }
+
+      console.log(data.email + " " + data.password);
+
+      let result = await doPost("http://localhost/backend/login.php", data);
+      console.log("ahooray");
+
+      if (result.data.status) {
+        navigate('/mainpage');
+      } else {
+        alert(result.data.message);
+      }
+
+    } catch (e) {
+      alert(e.toString());
+    } finally {
+      setIsLoading(false);
+    }
+
   };
 
   return (
@@ -84,6 +119,8 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+            onChange={(ev) => setEmail(ev.target.value)}
               />
               <TextField
                 margin="normal"
@@ -94,6 +131,8 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+            onChange={(ev) => setPassword(ev.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

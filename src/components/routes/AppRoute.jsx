@@ -10,7 +10,7 @@ export default function AppRoute() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignInForm />} />
-          <Route path="/welcomepage" element={<MainPage />} />
+          <Route path="/mainpage" element={<MainPage />} />
         </Routes>
       </BrowserRouter>
     </>
